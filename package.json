@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "description": "JavaScript project",
   "main": "index.js",
-  "dependencies": {
+  "devDependencies": {
+    "json-server": "^0.17.3",
     "prettier": "^2.8.8"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["js","html"],
+  "keywords": [
+    "js",
+    "html"
+  ],
   "author": "Urinboev Elmurod",
   "license": "ISC"
 }

@@ -185,35 +185,15 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  new MenuCard(
-    "img/tabs/1.png",
-    "vegy",
-    'Plan "Usual"',
-    "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit nesciunt facere, sequi exercitationem praesentium ab cupiditate beatae debitis perspiciatis itaque quaerat id modi corporis delectus ratione nobis harum voluptatum in.",
-    10,
-    ".menu .container",
-    "menu__item"
-  ).render();
+  // AXIOS - kutubxonasi bilan ishlash. Bu bizga object qaytaradi va uning ichidagi data kalit so'zi orqali serverdan kelgan datalarni olishimiz mumkin!
+  axios.get('http://localhost:3000/menu').then(data=>{
+    data.data.forEach(({img,alt,title,desc,price})=>{
+      new MenuCard(img,alt,title,desc,price,'.menu .container').render();
+    })
+  })
 
-  new MenuCard(
-    "img/tabs/2.jpg",
-    "elite",
-    'Plan "Premium"',
-    "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit nesciunt facere, sequi exercitationem praesentium ab cupiditate beatae debitis perspiciatis itaque quaerat id modi corporis delectus ratione nobis harum voluptatum in.",
-    15,
-    ".menu .container",
-    "menu__item"
-  ).render();
-
-  new MenuCard(
-    "img/tabs/3.jpg",
-    "elite",
-    'Plan "VIP"',
-    "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit nesciunt facere, sequi exercitationem praesentium ab cupiditate beatae debitis perspiciatis itaque quaerat id modi corporis delectus ratione nobis harum voluptatum in.",
-    30,
-    ".menu .container",
-    "menu__item"
-  ).render();
+  
+  
 
   // Forms
 
@@ -226,10 +206,25 @@ window.addEventListener("DOMContentLoaded", () => {
   const forms = document.querySelectorAll("form");
 
   forms.forEach((form) => {
-    postDate(form);
+    bindPostDate(form);
   });
 
-  function postDate(form) {
+  // async - asinxron funksiya yaratish
+
+  async function postData(url , data){
+    const res = await fetch(url, {
+        method: "POST",
+        headers: {"Content-type": 'application/json'},
+        body: data,
+      })
+    ;
+
+    return await res.json();
+
+      // await - bu kutish buyruqi ya'ni masalan resni qaytarishi uchun uni bajarilishini kutadi
+  }
+
+  function bindPostDate(form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault(); //Brauzerni default qiymatini o'chiradi
 
@@ -241,13 +236,10 @@ window.addEventListener("DOMContentLoaded", () => {
       const formData = new FormData(form);
 
       form.insertAdjacentElement("afterend", statusMessage);
+      //                   (objectga o'girish metodi) (massivga o'girish metodi)
+      const json = JSON.stringify(Object.fromEntries(formData.entries())) 
 
-      fetch("server.php", {
-        method: "POST",
-        headers: {"Content-type": 'application/json'},
-        body: formData,
-      })
-        .then((data) => data.text())
+      postData('http://localhost:3000/request' , json)
         .then((data) => {
           console.log(data);
           showThanksModal(msg.success);
@@ -258,15 +250,13 @@ window.addEventListener("DOMContentLoaded", () => {
         })
         .finally(()=>{
           form.reset();
-        });
+        })
+      ;
+      
       // const request = new XMLHttpRequest();
       // request.open('POST','server.php');
       // request.setRequestHeader('Content-type', 'application/json');
-      // const obj = {};
-
-      // formData.forEach((val,key)=>{
-      //     obj[key] = val;
-      // })
+      
 
       // const json = JSON.stringify(obj);
 
@@ -309,5 +299,6 @@ window.addEventListener("DOMContentLoaded", () => {
       prevModal.classList.remove("hide");
       closeModal();
     }, 4000);
-  }
+  };
+
 });
