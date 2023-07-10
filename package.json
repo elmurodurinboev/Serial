@@ -15,5 +15,9 @@
     "html"
   ],
   "author": "Urinboev Elmurod",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4"
+  }
 }
