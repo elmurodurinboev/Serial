@@ -17,9 +17,14 @@
     "js",
     "html"
   ],
+  "browser": [
+    "> 1%"
+  ],
   "author": "Urinboev Elmurod",
   "license": "ISC",
   "dependencies": {
+    "babel-loader": "^9.1.3",
+    "core-js": "^3.31.1",
     "webpack": "^5.88.1",
     "webpack-cli": "^5.1.4"
   }
