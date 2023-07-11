@@ -1,28 +1,26 @@
-function timer(){
-  const deadline = "2024-08-11";
-
+function timer(id, deadline) {
   function getTimeRemaining(endTime) {
-    const timer = Date.parse(endTime) - Date.parse(new Date());
+    const timer = Date.parse(endTime) - Date.parse(new Date())
     if (timer <= 0) {
-      days = 0;
-      hours = 0;
-      minutes = 0;
-      seconds = 0;
+      days = 0
+      hours = 0
+      minutes = 0
+      seconds = 0
     } else {
-      days = Math.floor(timer / (1000 * 60 * 60 * 24));
-      hours = Math.floor((timer / (1000 * 60 * 60)) % 24);
-      minutes = Math.floor((timer / (1000 * 60)) % 60);
-      seconds = Math.floor((timer / 1000) % 60);
+      days = Math.floor(timer / (1000 * 60 * 60 * 24))
+      hours = Math.floor((timer / (1000 * 60 * 60)) % 24)
+      minutes = Math.floor((timer / (1000 * 60)) % 60)
+      seconds = Math.floor((timer / 1000) % 60)
     }
 
-    return { timer, days, hours, minutes, seconds };
+    return { timer, days, hours, minutes, seconds }
   }
 
   function getThero(time) {
     if (time >= 0 && time < 10) {
-      return `0${time}`;
+      return `0${time}`
     } else {
-      return time;
+      return time
     }
   }
 
@@ -32,22 +30,21 @@ function timer(){
       hours = timer.querySelector("#hours"),
       minutes = timer.querySelector("#minutes"),
       seconds = timer.querySelector("#seconds"),
-      timeInterval = setInterval(uppdateClock, 1000);
-    uppdateClock();
+      timeInterval = setInterval(uppdateClock, 1000)
+    uppdateClock()
 
     function uppdateClock() {
-      const t = getTimeRemaining(endTime);
-      days.innerHTML = getThero(t.days);
-      hours.innerHTML = getThero(t.hours);
-      minutes.innerHTML = getThero(t.minutes);
-      seconds.innerHTML = getThero(t.seconds);
+      const t = getTimeRemaining(endTime)
+      days.innerHTML = getThero(t.days)
+      hours.innerHTML = getThero(t.hours)
+      minutes.innerHTML = getThero(t.minutes)
+      seconds.innerHTML = getThero(t.seconds)
 
       if (timer < 0) {
-        clearInterval(timeInterval);
+        clearInterval(timeInterval)
       }
     }
   }
-  setInterval(setClock(".timer", deadline), 1000);
+  setInterval(setClock(id, deadline), 1000)
 }
-
-module.exports = timer;
+export default timer

@@ -4,6 +4,9 @@
   "description": "JavaScript project",
   "main": "index.js",
   "devDependencies": {
+    "@babel/cli": "^7.22.6",
+    "@babel/core": "^7.22.8",
+    "@babel/preset-env": "^7.22.7",
     "json-server": "^0.17.3",
     "prettier": "^2.8.8"
   },

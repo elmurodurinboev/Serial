@@ -1,65 +1,50 @@
-function form(){
+import { openModal, closeModal } from "./modal"
+import { postData } from "../server/server"
+function form(formSelector, modalTimerId) {
   // Forms
   const msg = {
     load: "Loading",
     success: "Thank's for submitting our form!",
     failure: "Oops!. Somthing went wrong!",
-  };
+  }
 
-  const forms = document.querySelectorAll("form");
+  const forms = document.querySelectorAll(formSelector)
 
   forms.forEach((form) => {
-    bindPostDate(form);
-  });
-
-  // async - asinxron funksiya yaratish
-
-  async function postData(url , data){
-    const res = await fetch(url, {
-        method: "POST",
-        headers: {"Content-type": 'application/json'},
-        body: data,
-      })
-    ;
-
-    return await res.json();
-
-      // await - bu kutish buyruqi ya'ni masalan resni qaytarishi uchun uni bajarilishini kutadi
-  }
+    bindPostDate(form)
+  })
 
   function bindPostDate(form) {
     form.addEventListener("submit", (e) => {
-      e.preventDefault(); //Brauzerni default qiymatini o'chiradi
+      e.preventDefault() //Brauzerni default qiymatini o'chiradi
 
-      const statusMessage = document.createElement("div");
-      statusMessage.textContent = msg.load;
-      statusMessage.style.textAlign = "center";
-      form.append(statusMessage);
+      const statusMessage = document.createElement("div")
+      statusMessage.textContent = msg.load
+      statusMessage.style.textAlign = "center"
+      form.append(statusMessage)
 
-      const formData = new FormData(form);
+      const formData = new FormData(form)
 
-      form.insertAdjacentElement("afterend", statusMessage);
+      form.insertAdjacentElement("afterend", statusMessage)
       //                   (objectga o'girish metodi) (massivga o'girish metodi)
-      const json = JSON.stringify(Object.fromEntries(formData.entries())) 
+      const json = JSON.stringify(Object.fromEntries(formData.entries()))
 
-      postData('http://localhost:3000/request' , json)
+      postData("http://localhost:3000/request", json)
         .then((data) => {
-          console.log(data);
-          showThanksModal(msg.success);
-          statusMessage.remove();
+          console.log(data)
+          showThanksModal(msg.success)
+          statusMessage.remove()
         })
         .catch(() => {
-          showThanksModal(msg.failure);
+          showThanksModal(msg.failure)
         })
-        .finally(()=>{
-          form.reset();
+        .finally(() => {
+          form.reset()
         })
-      ;
-      
+
       // const request = new XMLHttpRequest();
       // request.open('POST','server.php');
       // request.setRequestHeader('Content-type', 'application/json');
-      
 
       // const json = JSON.stringify(obj);
 
@@ -78,14 +63,14 @@ function form(){
       //         showThanksModal(msg.failure);
       //     }
       // })
-    });
+    })
   }
 
   function showThanksModal(message) {
-    const prevModal = document.querySelector(".modal__dialog");
-    prevModal.classList.add("hide");
-    openModal();
-    const showModal = document.createElement("div");
+    const prevModal = document.querySelector(".modal__dialog")
+    prevModal.classList.add("hide")
+    openModal(".modal", modalTimerId)
+    const showModal = document.createElement("div")
     showModal.innerHTML = `
             <div class="modal__content">
                 <div data-close class="modal__close">&times;</div>
@@ -93,16 +78,16 @@ function form(){
                   ${message}
                 </div>
             </div>
-        `;
+        `
 
-    document.querySelector(".modal").append(showModal);
+    document.querySelector(".modal").append(showModal)
     setTimeout(() => {
-      showModal.remove();
-      prevModal.classList.add("show");
-      prevModal.classList.remove("hide");
-      closeModal();
-    }, 4000);
-  };
+      showModal.remove()
+      prevModal.classList.add("show")
+      prevModal.classList.remove("hide")
+      closeModal(".modal")
+    }, 4000)
+  }
 }
 
-module.exports = form;
+export default form
